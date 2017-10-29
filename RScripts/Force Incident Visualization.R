@@ -17,7 +17,7 @@ force <- read.csv(force.datapath, header = TRUE)
 cinci <- read.csv(calls.datapath, header = TRUE)
 
 # Heatmap of Cincinnati force incidents
-cinci.map <- get_map("cincinnati, ohio", zoom = 12, maptype = 'roadmap')
+cinci.map <- get_map("Cincinnati Zoo & Botanical Garden", zoom = 12, maptype = 'roadmap', color = "bw")
 cinci.plot <- ggmap(cinci.map) +
     geom_point(data = force, mapping = aes(x = LONGITUDE_X, y = LATITUDE_X), color = "dark green", alpha = 0.1, size = 1.1) +
     geom_density2d(data = force, mapping = aes(x = LONGITUDE_X, y = LATITUDE_X), size = 0.3) +
