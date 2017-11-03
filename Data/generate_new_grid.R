@@ -1,7 +1,7 @@
 library(dplyr)
 
 #assumes a square grid
-grid_size <- 25
+grid_size <- 50
 
 #assigns indexes to grid spaces
 #origin is at bottom left
@@ -25,7 +25,7 @@ bottom_y <- sort(rep(y_bounds[1:grid_size],grid_size), decreasing = FALSE)
 top_y <- sort(rep(y_bounds[2:(grid_size+1)],grid_size), decreasing = FALSE)
 
 #constructs data frame of grid
-df <- data.frame(x_index,y_index,left_x, right_x, bottom_y, top_y, orig_index)
+df <- data.frame(x_index,y_index,left_x, right_x, bottom_y, top_y)
 
 empty_grid <- function(grid, hour1, day1){
   new_grid <- grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
@@ -41,7 +41,7 @@ for(day in 1:7){
     if(day == 1 & hour1 == 0){
       fresh_grid <- add_theft
     } else{
-      fresh_grid <- rbind(theft_grid,add_theft)
+      fresh_grid <- rbind(fresh_grid,add_theft)
     }
   }
 }
