@@ -1,7 +1,7 @@
 library(dplyr)
 
 #assumes a square grid
-grid_size <- 3
+grid_size <- 10
 
 #assigns indexes to grid spaces
 #origin is at bottom left
@@ -9,10 +9,10 @@ x_index <- rep(seq(from = 1, to = grid_size, by = 1),grid_size)
 y_index <- sort(rep(seq(from = 1, to = grid_size, by = 1),grid_size), decreasing = FALSE)
 
 #bounds on city
-left_bound <- 0
-right_bound <- 10
-top_bound <- 10
-bottom_bound <- 0
+left_bound <- -122.5515
+right_bound <- -122.112
+top_bound <- 47.75391
+bottom_bound <- 47.45762
 
 #calculates left and right bounds for each grid space
 x_bounds <- seq(left_bound, right_bound, length = grid_size+1)
@@ -31,11 +31,11 @@ orig_index <- c(1:grid_size^2)
 df <- data.frame(x_index,y_index,left_x, right_x, bottom_y, top_y, num_thefts, orig_index)
 
 
-#function to append grid for a specific time bucket (lat and long of incidents) on a specific day
+#function to append grid for a specific time bucket (latitude and longitude of incidents) on a specific day
 append_grid <- function(grid, theft_bucket, hour1, day1){
   for(i in 1:nrow(theft_bucket)){
-    x <- grid$x_index[min(which(theft_bucket$long[i] > grid$left_x & theft_bucket$long[i] < grid$right_x))]
-    y <- grid %>% filter(x_index == x) %>% filter(theft_bucket$lat[i] < top_y & theft_bucket$lat[i] > bottom_y)
+    x <- grid$x_index[min(which(theft_bucket$Longitude[i] > grid$left_x & theft_bucket$Longitude[i] < grid$right_x))]
+    y <- grid %>% filter(x_index == x) %>% filter(theft_bucket$Latitude[i] < top_y & theft_bucket$Latitude[i] > bottom_y)
     y = y$y_index
     row <- grid %>% filter(x_index == x) %>% filter(y_index == y)
     grid$num_thefts[row$orig_index] <- grid$num_thefts[row$orig_index] + 1
@@ -53,13 +53,15 @@ empty_grid <- function(grid, hour1, day1){
   grid
 }
 
+thefts <- read.csv('TheftData.csv')
+
 for(day in 1:7){
   for(hour1 in 0:23){
     bucket <- thefts %>% filter(Weekday == day) %>% filter(Hour == hour1)
-    if(nrow(bucket) == 0){
-      add_theft <- empty_grid(df,hour1,day)
-    } else{
+    if(nrow(bucket) != 0){
       add_theft <- append_grid(df,bucket, hour1, day)
+    } else{
+      add_theft <- empty_grid(df,hour1,day)
     }
     
     if(day == 1 & hour1 == 0){
