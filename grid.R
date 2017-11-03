@@ -43,4 +43,29 @@ append_grid <- function(grid, theft_bucket, hour1, day1){
   grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
     mutate(x_index = NULL) %>% mutate(y_index = NULL) %>% mutate(left_x = NULL) %>% mutate(right_x = NULL) %>%
     mutate(bottom_y = NULL) %>% mutate(top_y = NULL) %>% mutate(hour = hour1) %>% mutate(day = day1)
+  grid
+}
+
+empty_grid <- function(grid, hour1, day1){
+  grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
+    mutate(x_index = NULL) %>% mutate(y_index = NULL) %>% mutate(left_x = NULL) %>% mutate(right_x = NULL) %>%
+    mutate(bottom_y = NULL) %>% mutate(top_y = NULL) %>% mutate(hour = hour1) %>% mutate(day = day1)
+  grid
+}
+
+for(day in 1:7){
+  for(hour1 in 0:23){
+    bucket <- thefts %>% filter(Weekday == day) %>% filter(Hour == hour1)
+    if(nrow(bucket) == 0){
+      add_theft <- empty_grid(df,hour1,day)
+    } else{
+      add_theft <- append_grid(df,bucket, hour1, day)
+    }
+    
+    if(day == 1 & hour1 == 0){
+      theft_grid <- add_theft
+    } else{
+      theft_grid <- rbind(theft_grid,add_theft)
+    }
+  }
 }
