@@ -37,7 +37,7 @@ append_grid <- function(grid, theft_bucket, hour1, day1){
     x <- grid$x_index[min(which(theft_bucket$Longitude[i] > grid$left_x & theft_bucket$Longitude[i] < grid$right_x))]
     y <- grid %>% filter(x_index == x) %>% filter(theft_bucket$Latitude[i] < top_y & theft_bucket$Latitude[i] > bottom_y)
     y = y$y_index
-    row <- grid %>% filter(x_index == x) %>% filter(y_index == y)
+    row <- grid %>% filter(x_index %in% x) %>% filter(y_index %in% y)
     grid$num_thefts[row$orig_index] <- grid$num_thefts[row$orig_index] + 1
   }
   grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
@@ -56,7 +56,11 @@ empty_grid <- function(grid, hour1, day1){
 thefts <- read.csv('TheftData.csv')
 
 for(day in 1:7){
+  print('day:')
+  print(day)
   for(hour1 in 0:23){
+    print('hour:')
+    print(hour1)
     bucket <- thefts %>% filter(Weekday == day) %>% filter(Hour == hour1)
     if(nrow(bucket) != 0){
       add_theft <- append_grid(df,bucket, hour1, day)
