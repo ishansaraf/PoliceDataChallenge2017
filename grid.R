@@ -24,6 +24,18 @@ top_y <- sort(rep(y_bounds[2:(grid_size+1)],grid_size), decreasing = FALSE)
 
 #initializes 0 incidents in each element
 num_thefts <- rep(0,grid_size^2)
-
+orig_index <- c(1:grid_size^2)
 #constructs data frame of grid
-df <- data.frame(x_index,y_index,left_x, right_x, bottom_y, top_y, num_thefts)
+df <- data.frame(x_index,y_index,left_x, right_x, bottom_y, top_y, num_thefts, orig_index)
+
+
+#function to append grid for a specific time bucket (lat and long of incidents) on a specific day
+append_grid <- function(grid, theft_bucket, hour, day){
+  for(i in 1:length(theft_bucket)){
+    x <- grid$x_index[min(which(theft_bucket$long[i] > grid$left_x))]
+    y <- grid$x_index[min(which(theft_bucket$lat[i] > grid$left_x)) & grid$x_index == x]
+    row <- grid %>% filter(x_index == x) %>% filter(y_index == y)
+    grid$num_thefts[row$orig_index] <- grid$num_thefts[row$orig_index] + 1
+  }
+  grid
+}
