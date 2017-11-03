@@ -40,17 +40,17 @@ append_grid <- function(grid, theft_bucket, hour1, day1){
     row <- grid %>% filter(x_index %in% x) %>% filter(y_index %in% y)
     grid$num_thefts[row$orig_index] <- grid$num_thefts[row$orig_index] + 1
   }
-  grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
+  new_grid <- grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
     mutate(x_index = NULL) %>% mutate(y_index = NULL) %>% mutate(left_x = NULL) %>% mutate(right_x = NULL) %>%
     mutate(bottom_y = NULL) %>% mutate(top_y = NULL) %>% mutate(hour = hour1) %>% mutate(day = day1)
-  grid
+  new_grid
 }
 
 empty_grid <- function(grid, hour1, day1){
-  grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
+  new_grid <- grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
     mutate(x_index = NULL) %>% mutate(y_index = NULL) %>% mutate(left_x = NULL) %>% mutate(right_x = NULL) %>%
     mutate(bottom_y = NULL) %>% mutate(top_y = NULL) %>% mutate(hour = hour1) %>% mutate(day = day1)
-  grid
+  new_grid
 }
 
 thefts <- read.csv('TheftData.csv')
