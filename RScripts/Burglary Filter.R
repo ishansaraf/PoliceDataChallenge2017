@@ -1,5 +1,6 @@
-library(dplyr)
-library(ggmap)
+# Loading libraries and reading data
+libraries <- c("dplyr", "ggmap", "lubridate")
+lapply(libraries, require, character.only = TRUE)
 seattle <- read.csv("Seattle_Police_Department_911_Incident_Response.csv", header = TRUE)
 
 # Cleaning dataset of irrelevant columns
@@ -16,6 +17,14 @@ theft_descriptions <- c("THEFT - MISCELLANEOUS", "SHOPLIFT", "BURGLARY - RESIDEN
 thefts <- seattle %>% filter(Event.Clearance.Group %in% theft_groups |
                                Event.Clearance.SubGroup %in% theft_sub_groups |
                                Event.Clearance.Description %in% theft_descriptions)
+
+# Bucketing Times, Computing Weekday of Theft
+thefts$Date <- substr(thefts$Event.Clearance.Date, 1, 10)
+thefts$Time <- substr(thefts$Event.Clearance.Date, 12, 22)
+thefts$Date <- mdy(thefts$Date)
+thefts$Weekday <- wday(thefts$Date)
+thefts$Time <- format(strptime(thefts$Time, "%I:%M:%S %p"), format = "%H:%M:%S")
+thefts$Hour <- as.numeric(substr(thefts$Time, 1, 2))
 
 # Visualizing theft locations
 seattle_google_map <- get_map("seattle", zoom = 11, maptype = "roadmap", color = "bw")
