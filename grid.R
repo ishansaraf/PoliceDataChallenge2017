@@ -1,5 +1,5 @@
 library(dplyr)
-
+start.time <- Sys.time()
 #assumes a square grid
 grid_size <- 10
 
@@ -75,3 +75,7 @@ for(day in 1:7){
     }
   }
 }
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+beep(8)
