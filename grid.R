@@ -1,3 +1,5 @@
+library(dplyr)
+
 #assumes a square grid
 grid_size <- 3
 
@@ -30,12 +32,15 @@ df <- data.frame(x_index,y_index,left_x, right_x, bottom_y, top_y, num_thefts, o
 
 
 #function to append grid for a specific time bucket (lat and long of incidents) on a specific day
-append_grid <- function(grid, theft_bucket, hour, day){
-  for(i in 1:length(theft_bucket)){
-    x <- grid$x_index[min(which(theft_bucket$long[i] > grid$left_x))]
-    y <- grid$x_index[min(which(theft_bucket$lat[i] > grid$left_x)) & grid$x_index == x]
+append_grid <- function(grid, theft_bucket, hour1, day1){
+  for(i in 1:nrow(theft_bucket)){
+    x <- grid$x_index[min(which(theft_bucket$long[i] > grid$left_x & theft_bucket$long[i] < grid$right_x))]
+    y <- grid %>% filter(x_index == x) %>% filter(theft_bucket$lat[i] < top_y & theft_bucket$lat[i] > bottom_y)
+    y = y$y_index
     row <- grid %>% filter(x_index == x) %>% filter(y_index == y)
     grid$num_thefts[row$orig_index] <- grid$num_thefts[row$orig_index] + 1
   }
-  grid
+  grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
+    mutate(x_index = NULL) %>% mutate(y_index = NULL) %>% mutate(left_x = NULL) %>% mutate(right_x = NULL) %>%
+    mutate(bottom_y = NULL) %>% mutate(top_y = NULL) %>% mutate(hour = hour1) %>% mutate(day = day1)
 }
