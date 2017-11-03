@@ -26,6 +26,11 @@ thefts$Weekday <- wday(thefts$Date)
 thefts$Time <- format(strptime(thefts$Time, "%I:%M:%S %p"), format = "%H:%M:%S")
 thefts$Hour <- as.numeric(substr(thefts$Time, 1, 2))
 
+# Further cleaning
+drop_columns <- c("Event.Clearance.Date", "Event.Clearance.Group", "Event.Clearance.SubGroup", "Event.Clearance.Description",
+                  "Initial.Type.Description", "Initial.Type.Subgroup", "Initial.Type.Group", "At.Scene.Time")
+thefts <- thefts[, !(names(thefts) %in% drop_columns)]
+
 # Exporting theft dataframe
 write.csv(thefts, "TheftData.csv")
 
