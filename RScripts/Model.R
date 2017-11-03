@@ -20,7 +20,7 @@ tuning_grid <- expand.grid(mtry = seq(from = 3, to = 15, by = 1))
 trees <- train(num_thefts ~ .,
                data = theft_train,
                method = "cforest",
-               trControl = cross_validation.
+               trControl = cross_validation,
                tuneGrid = tuning_grid)
 
 # Predictions

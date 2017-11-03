@@ -79,3 +79,5 @@ end.time <- Sys.time()
 time.taken <- end.time - start.time
 time.taken
 beep(8)
+
+# write.csv(theft_grid, "10x10Grid.csv")
