@@ -26,6 +26,9 @@ thefts$Weekday <- wday(thefts$Date)
 thefts$Time <- format(strptime(thefts$Time, "%I:%M:%S %p"), format = "%H:%M:%S")
 thefts$Hour <- as.numeric(substr(thefts$Time, 1, 2))
 
+# Exporting theft dataframe
+write.csv(thefts, "TheftData.csv")
+
 # Visualizing theft locations
 seattle_google_map <- get_map("seattle", zoom = 11, maptype = "roadmap", color = "bw")
 theft_plot <- ggmap(seattle_google_map) +
