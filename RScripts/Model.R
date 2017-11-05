@@ -1,5 +1,7 @@
-library(caret)
-library(party)
+# Loading libraries and reading data
+libraries <- c("dplyr", "caret", "party", "beepr")
+lapply(libraries, require, character.only = TRUE)
+start.time <- Sys.time()
 theft_grid <- read.csv("10x10Grid.csv", header = TRUE)
 
 # Splitting into training and test data
@@ -14,7 +16,7 @@ theft_test <- theft_grid %>% slice(-inTrain)
 cross_validation <- trainControl(method = "cv", number = 5)
 
 # Tuning Grid
-tuning_grid <- expand.grid(mtry = seq(from = 3, to = 15, by = 1))
+tuning_grid <- expand.grid(mtry = seq(from = 1, to = 5, by = 1))
 
 # Fitting random forest
 trees <- train(num_thefts ~ .,
@@ -27,4 +29,12 @@ trees <- train(num_thefts ~ .,
 predictions <- predict(trees, newdata = theft_test)
 
 # Confusion Matrix
-confusionMatrix(predictions, theft_test$num_thefts)
+# confusionMatrix(predictions, theft_test$num_thefts)
+
+# Mean Squared Error
+trees
+
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+beep(8)
