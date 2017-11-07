@@ -45,3 +45,5 @@ for(day in 1:7){
     }
   }
 }
+
+# write.csv(fresh_grid, "./50x50Grid.csv")

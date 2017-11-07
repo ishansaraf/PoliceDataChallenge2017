@@ -1,5 +1,5 @@
 # Loading libraries and reading data
-libraries <- c("dplyr", "caret", "party", "beepr")
+libraries <- c("dplyr", "caret", "party", "beepr", "ggplot2", "ggmap")
 lapply(libraries, require, character.only = TRUE)
 start.time <- Sys.time()
 theft_grid <- read.csv("10x10Grid.csv", header = TRUE)
@@ -38,3 +38,29 @@ end.time <- Sys.time()
 time.taken <- end.time - start.time
 time.taken
 beep(8)
+
+# Plugging original model into the fresh 50x50 grid
+fifty_grid <- read.csv("./50x50Grid.csv", header = TRUE)
+new_predictions <- predict(trees, newdata = fifty_grid)
+fifty_grid <- fifty_grid %>% mutate(num_thefts = new_predictions)
+# write.csv(fifty_grid, "~/github/PoliceDataChallenge2017/Data/Predicted Grid.csv")
+
+
+# Constructing static images
+seattle_google_map <- get_map("seattle", zoom = 11, maptype = "roadmap", color = "bw")
+heatmapper <- function(day1, hour1) {
+  filepath <- paste("./Visualizations/seattleTheftPredictionDay", day1, "Hour", hour1, ".png",sep = "")
+  tempdata <- fifty_grid %>% filter(day == day1 & hour == hour1)
+  theft_plot <- ggmap(seattle_google_map) +
+    #geom_point(data = tempdata, mapping = aes(x = x_repr, y = y_repr), color = "dark green", alpha = 0.03) +
+    geom_density2d(data = tempdata, mapping = aes(x = x_repr, y = y_repr), size = 0.3) +
+    stat_density2d(data = tempdata, mapping = aes(x = x_repr, y = y_repr, fill = ..level.., alpha = ..level..),
+                   size = 0.01, bins = 16, geom = "polygon") +
+    scale_alpha(range = c(0, 0.3), guide = FALSE) +
+    scale_fill_gradient(low = "green", high = "red") +
+    theme(axis.ticks = element_blank(), axis.text = element_blank(), axis.line = element_blank())
+  theft_plot
+  ggsave(filepath)
+}
+
+
