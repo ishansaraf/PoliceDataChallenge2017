@@ -30,7 +30,7 @@ df <- data.frame(x_index,y_index,left_x, right_x, bottom_y, top_y)
 empty_grid <- function(grid, hour1, day1){
   new_grid <- grid %>% mutate(x_repr = (left_x+right_x)/2) %>% mutate(y_repr = (top_y+bottom_y)/2) %>% mutate(orig_index = NULL) %>%
     mutate(x_index = NULL) %>% mutate(y_index = NULL) %>% mutate(left_x = NULL) %>% mutate(right_x = NULL) %>%
-    mutate(bottom_y = NULL) %>% mutate(top_y = NULL) %>% mutate(hour = hour1) %>% mutate(day = day1)
+    mutate(bottom_y = NULL) %>% mutate(top_y = NULL) %>% mutate(hour = hour1) %>% mutate(day = day1) %>% mutate(num_thefts = 0)
   new_grid
 }
 
