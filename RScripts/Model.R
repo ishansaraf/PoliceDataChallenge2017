@@ -48,6 +48,7 @@ fifty_grid_orig <- fifty_grid_orig %>% mutate(num_thefts = new_predictions)
 transform_points <- function(df){
   df <- df %>% mutate(num_thefts = round(num_thefts))
   for(i in 1:nrow(df)){
+    print(i)
     temp_x <- rep(df$x_repr[i],df$num_thefts[i])
     temp_y <- rep(df$y_repr[i],df$num_thefts[i])
     temp_day <- rep(df$day[i],df$num_thefts[i])
@@ -62,6 +63,8 @@ transform_points <- function(df){
 }
 
 fifty_grid <- transform_points(fifty_grid_orig)
+heatmapper(1,0)
+
 
 # Constructing static images
 seattle_google_map <- get_map("seattle", zoom = 11, maptype = "roadmap", color = "bw")
