@@ -60,6 +60,7 @@ transform_points <- function(df){
       new_data <- rbind(new_data,temp_df)
     }
   }
+  return(new_data)
 }
 
 fifty_grid <- transform_points(fifty_grid_orig)
