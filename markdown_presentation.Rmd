@@ -51,7 +51,7 @@ Display Figure 1
 
 We want to use time as a regressor in our model; for example, thefts are more common at 2 AM than 9 AM. We could use every minute, even second, during a month, or even a year. But this is incredibly computationally intensive, instead we will divide incidents according to what day of the week they occurred, and what hour of the day they occured. 
 
-Display Figure 2
+![](Fig2.png)</center>
 
 ## Sorting
 

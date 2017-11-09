@@ -119,13 +119,11 @@
 
 </article></slide><slide class=''><hgroup><h2>Data set</h2></hgroup><article  id="data-set-1">
 
-<ul>
-<li>Filtered for thefts/burglaries</li>
-<li>Used the lubridate library to standardize days and time format</li>
-<li>Kept only the latitude, longitude, day, and time variables.</li>
-</ul>
+<p>Filtered for thefts/burglaries Display example code</p>
 
-<p>Display filtered head</p>
+<p>Used the lubridate library to standardize days and time format Display lubridate</p>
+
+<p>Kept only the latitude, longitude, day, and time variables. Display filtered head</p>
 
 </article></slide><slide class=''><hgroup><h2>Grid</h2></hgroup><article  id="grid">
 
@@ -139,13 +137,17 @@
 
 <p>We want to use time as a regressor in our model; for example, thefts are more common at 2 AM than 9 AM. We could use every minute, even second, during a month, or even a year. But this is incredibly computationally intensive, instead we will divide incidents according to what day of the week they occurred, and what hour of the day they occured.</p>
 
-<p>Display Figure 2</p>
+<img src='data:image/png;base64,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' title=''/>
+
+</center>
 
 </article></slide><slide class=''><hgroup><h2>Sorting</h2></hgroup><article  id="sorting">
 
 <p>Our initial model was trained using a 10x10 grid overlayed over Seattle. When accounting for time, this gives 16,800 data points.</p>
 
 <p>For this relatively small grid, it took approximately 4 1/2 hours to transform to this new format.</p>
+
+<p>Display Figure 3</p>
 
 </article></slide><slide class=''><hgroup><h2>Machine Learning</h2></hgroup><article  id="machine-learning">
 
@@ -188,6 +190,20 @@
 <p>Show head of new data</p>
 
 </article></slide><slide class=''><hgroup><h2>Dynamic Visualization</h2></hgroup><article  id="dynamic-visualization">
+
+</article></slide><slide class=''><hgroup><h2>Results</h2></hgroup><article  id="results">
+
+<ul>
+<li>Not entirely sure about method of splitting training and test sets.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Future Work</h2></hgroup><article  id="future-work">
+
+<ul>
+<li>Interested to compare how initial and post grid sizing affects results. This just takes time due to computing resources.</li>
+<li>How can we improve our r-sqrd values?</li>
+<li>Research into other methods of dealing with spatial prediction.</li>
+</ul>
 
 </article></slide><slide class=''><hgroup><h2>R Markdown</h2></hgroup><article  id="r-markdown">
 

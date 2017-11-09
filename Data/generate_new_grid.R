@@ -1,7 +1,7 @@
 library(dplyr)
 
 #assumes a square grid
-grid_size <- 50
+grid_size <- 20
 
 #assigns indexes to grid spaces
 #origin is at bottom left
@@ -46,4 +46,4 @@ for(day in 1:7){
   }
 }
 
-# write.csv(fresh_grid, "./50x50Grid.csv")
+write.csv(fresh_grid, "./20x20Grid.csv")
