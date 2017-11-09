@@ -71,17 +71,25 @@ heatmapper(1,0)
 seattle_google_map <- get_map("seattle", zoom = 11, maptype = "roadmap", color = "bw")
 heatmapper <- function(day1, hour1) {
   filepath <- paste("./Visualizations/seattleTheftPredictionDay", day1, "Hour", hour1, ".png",sep = "")
-  tempdata <- fifty_grid %>% filter(day == day1 & hour == hour1)
+  tempdata <- twenty_grid %>% filter(day == day1 & hour == hour1)
   theft_plot <- ggmap(seattle_google_map) +
     #geom_point(data = tempdata, mapping = aes(x = x_repr, y = y_repr), color = "dark green", alpha = 0.03) +
-    geom_density2d(data = tempdata, mapping = aes(x = x_repr, y = y_repr), size = 0.3) +
-    stat_density2d(data = tempdata, mapping = aes(x = x_repr, y = y_repr, fill = ..level.., alpha = ..level..),
+    geom_density2d(data = tempdata, mapping = aes(x = x, y = y), size = 0.3) +
+    stat_density2d(data = tempdata, mapping = aes(x = x, y = y, fill = ..level.., alpha = ..level..),
                    size = 0.01, bins = 16, geom = "polygon") +
     scale_alpha(range = c(0, 0.3), guide = FALSE) +
     scale_fill_gradient(low = "green", high = "red") +
     theme(axis.ticks = element_blank(), axis.text = element_blank(), axis.line = element_blank())
   theft_plot
   ggsave(filepath)
+}
+
+for(i in 1:7) {
+  print(i)
+  for(j in 0:23) {
+    print(j)
+    heatmapper(day1 = i, hour1 = j)
+  }
 }
 
 
