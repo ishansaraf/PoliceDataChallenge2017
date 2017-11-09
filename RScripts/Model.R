@@ -40,13 +40,13 @@ time.taken
 beep(8)
 
 # Plugging original model into the fresh 50x50 grid
-fifty_grid_orig <- read.csv("./50x50Grid.csv", header = TRUE)
-new_predictions <- predict(trees, newdata = fifty_grid_orig)
-fifty_grid_orig <- fifty_grid_orig %>% mutate(num_thefts = new_predictions)
+twenty_grid_orig <- read.csv("./20x20Grid.csv", header = TRUE)
+new_predictions <- predict(trees, newdata = twenty_grid_orig)
+twenty_grid_orig <- twenty_grid_orig %>% mutate(num_thefts = new_predictions)
 # write.csv(fifty_grid, "~/github/PoliceDataChallenge2017/Data/Predicted Grid.csv")
 
 transform_points <- function(df){
-  df <- df %>% mutate(num_thefts = round(num_thefts))
+df <- df %>% mutate(num_thefts = round(num_thefts))
   for(i in 1:nrow(df)){
     print(i)
     temp_x <- rep(df$x_repr[i],df$num_thefts[i])
@@ -63,7 +63,7 @@ transform_points <- function(df){
   return(new_data)
 }
 
-fifty_grid <- transform_points(fifty_grid_orig)
+twenty_grid <- transform_points(twenty_grid_orig)
 heatmapper(1,0)
 
 
