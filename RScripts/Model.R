@@ -65,21 +65,26 @@ df <- df %>% mutate(num_thefts = round(num_thefts))
 
 twenty_grid <- transform_points(twenty_grid_orig)
 heatmapper(1,0)
-
+days <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+hours <- c("12:00am", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am", "6:00am", "7:00am", "8:00am", "9:00am",
+           "10:00am", "11:00am", "12:00pm", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm", "7:00pm",
+           "8:00pm", "9:00pm", "10:00pm", "11:00pm")
 
 # Constructing static images
 seattle_google_map <- get_map("seattle", zoom = 11, maptype = "roadmap", color = "bw")
 heatmapper <- function(day1, hour1) {
   filepath <- paste("./Visualizations/seattleTheftPredictionDay", day1, "Hour", hour1, ".png",sep = "")
+  plot_title <- paste("Predicted areas of theft in Seattle at ", hours[hour1 + 1], " on ", days[day1], sep = "")
   tempdata <- twenty_grid %>% filter(day == day1 & hour == hour1)
   theft_plot <- ggmap(seattle_google_map) +
-    #geom_point(data = tempdata, mapping = aes(x = x_repr, y = y_repr), color = "dark green", alpha = 0.03) +
     geom_density2d(data = tempdata, mapping = aes(x = x, y = y), size = 0.3) +
     stat_density2d(data = tempdata, mapping = aes(x = x, y = y, fill = ..level.., alpha = ..level..),
                    size = 0.01, bins = 16, geom = "polygon") +
     scale_alpha(range = c(0, 0.3), guide = FALSE) +
     scale_fill_gradient(low = "green", high = "red") +
-    theme(axis.ticks = element_blank(), axis.text = element_blank(), axis.line = element_blank())
+    theme(axis.ticks = element_blank(), axis.text = element_blank(), axis.line = element_blank(), legend.position = "none",
+          axis.title = element_blank()) +
+    labs(title = plot_title)
   theft_plot
   ggsave(filepath)
 }
