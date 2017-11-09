@@ -1,0 +1,141 @@
+---
+title: "Statistical Programming Final Project"
+author: "Nick Harrelson and Ishan Saraf"
+date: "November 9, 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Motivations
+
+This project began as a submission for This Is Statistics' Police Data Challenge. A competition intended for high school and undergraduate teams.
+
+The goal is to make statistically-backed reccomendations to law enforcement that would increase the safety of communities. The challenge specifies analyzing the 911 dispatch data of Baltimore, Cincinatti, and/or Seattle.
+
+## Data set
+
+We chose to look at the Seattle police dispatch data set. Overall, it was the most neatly formatted and uniform data set. 
+
+Display original head 
+
+## Goal
+
+- Show locations on a map that are most likely to be subject to burglary/theft. 
+- Across any date and time during the week. 
+
+- Would allow law enforcement to increase patrols in these areas to deter theft, or to catch thefts sooner.
+
+## Data set
+
+Filtered for thefts/burglaries
+Display example code
+
+Used the lubridate library to standardize days and time format
+Display lubridate
+
+Kept only the latitude, longitude, day, and time variables.
+Display filtered head
+
+## Grid
+
+Ultimate goal is to predict where we will observe incidents, and at what rate, using a machine learning model. But to predict where they will occur, we also need to know where they don't occur.
+
+We need to transform our data, a list of incidents, into a set that describes each possible location. To do this, we utilize a grid that details the number of incidents within each grid space.
+
+Display Figure 1
+
+## Time
+
+We want to use time as a regressor in our model; for example, thefts are more common at 2 AM than 9 AM. We could use every minute, even second, during a month, or even a year. But this is incredibly computationally intensive, instead we will divide incidents according to what day of the week they occurred, and what hour of the day they occured. 
+
+Display Figure 2
+
+## Sorting
+
+Our initial model was trained using a 10x10 grid overlayed over Seattle. When accounting for time, this gives 16,800 data points. 
+
+For this relatively small grid, it took approximately 4 1/2 hours to transform to this new format.
+
+Display Figure 3
+
+## Machine Learning
+
+have Ish comment more on this:
+
+Created training and a validation data sets from our large data set. We split this up by day and time, distributed evenly across, because each prediction requires a complete view of the entire city. We cannot separate the spatial data. 
+
+show example code
+
+## Machine Learning
+
+Comment more
+
+We trained our model using the cForest method. .... Shout out the the RBorist method. 
+
+show example code
+
+## Cross validation
+
+Not sure
+
+## New Grid Generation
+
+Now that we have a trained model, we can input any latitude, longitude, day, and hour and recieve an estimate for relative incident density  at that area. 
+
+The be able to see more details within the city, we generate a new grid to input into our model. This new grid has dimensions 50x50, for a total of 2500 elements. A dataframe is constructed containing all of these locations for all hours of the week. 
+
+Display head of new grid
+
+## Transformation for Plotting
+
+Utilizing the ggplot2 package, we can construct a heatmap of incidents within the city. This will allow us to view the general density of incidents, as well as where peaks occur. 
+
+The (insert heatmap function name) generates a plot by looking at a dataframe containing individual incidents and their locations. This makes our grid of frequencies useless. Therefore we transform the frequency of incidents in a grid spot into a finite number of incidents occuring at some spot representative of that grid element. 
+
+Show function code
+
+## Transformation for Plotting
+
+Show head of new data
+
+## Dynamic Visualization
+
+## Results
+
+- Not entirely sure about method of splitting training and test sets. 
+
+
+## Future Work
+
+- Interested to compare how initial and post grid sizing affects results. This just takes time due to computing resources. 
+- How can we improve our r-sqrd values?
+- Research into other methods of dealing with spatial prediction. 
+
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
