@@ -9,11 +9,12 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+
 ## Motivations
 
-This project began as a submission for This Is Statistics' Police Data Challenge. A competition intended for high school and undergraduate teams.
+This project began as a submission for This Is Statistics' Police Data Challenge, a competition intended for high school and undergraduate teams.
 
-The goal is to make statistically-backed reccomendations to law enforcement that would increase the safety of communities. The challenge specifies analyzing the 911 dispatch data of Baltimore, Cincinatti, and/or Seattle.
+The goal is to make statistically-backed recommendations to law enforcement that would increase the safety of communities. The challenge specifies analyzing the 911 dispatch data of Baltimore, Cincinatti, and/or Seattle.
 
 ## Data set
 
@@ -45,7 +46,11 @@ Ultimate goal is to predict where we will observe incidents, and at what rate, u
 
 We need to transform our data, a list of incidents, into a set that describes each possible location. To do this, we utilize a grid that details the number of incidents within each grid space.
 
-Display Figure 1
+## Grid
+![](fig_1a.png)
+
+## Grid
+![](fig_1b.png)
 
 ## Time
 
@@ -59,7 +64,8 @@ Our initial model was trained using a 10x10 grid overlayed over Seattle. When ac
 
 For this relatively small grid, it took approximately 4 1/2 hours to transform to this new format.
 
-Display Figure 3
+## Sorting
+![](fig_3.png)
 
 ## Machine Learning
 
