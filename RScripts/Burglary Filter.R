@@ -32,7 +32,7 @@ drop_columns <- c("Event.Clearance.Date", "Event.Clearance.Group", "Event.Cleara
 thefts <- thefts[, !(names(thefts) %in% drop_columns)]
 
 # Exporting theft dataframe
-write.csv(thefts, "TheftData.csv")
+# write.csv(thefts, "TheftData.csv")
 
 # Visualizing theft locations
 seattle_google_map <- get_map("seattle", zoom = 11, maptype = "roadmap", color = "bw")
